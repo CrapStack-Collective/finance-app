@@ -2,6 +2,7 @@
   "name": "machineLearning",
   "private": true,
   "scripts": {
-    "dev": "python main.py"
+    "activate": "source .venv/bin/activate",
+    "dev": "activate && fastapi dev main.py"
   }
 }
