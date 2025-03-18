@@ -1,0 +1,7 @@
+{
+  "name": "machineLearning",
+  "private": true,
+  "scripts": {
+    "dev": "python main.py"
+  }
+}
