@@ -36,3 +36,7 @@ yarn-error.log*
 # Misc
 .DS_Store
 *.pem
+apps/frontend/.output
+apps/frontend/.vinxi/types
+apps/frontend/count.txt
+apps/frontend/app.config.timestamp_1742304303774.js

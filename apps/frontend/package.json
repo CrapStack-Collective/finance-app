@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vinxi dev",
+    "run": "bun build && bun start",
     "build": "vinxi build",
     "start": "vinxi start"
   },
