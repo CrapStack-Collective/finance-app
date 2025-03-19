@@ -1,26 +1,61 @@
+import react from "@eslint-react/eslint-plugin";
+import js from "@eslint/js";
+import pluginQuery from "@tanstack/eslint-plugin-query";
+import pluginRouter from "@tanstack/eslint-plugin-router";
+import eslintConfigPrettier from "eslint-config-prettier";
+import reactCompiler from "eslint-plugin-react-compiler";
+import reactHooks from "eslint-plugin-react-hooks";
 import globals from "globals";
-import pluginJs from "@eslint/js";
 import tseslint from "typescript-eslint";
-import pluginReact from "eslint-plugin-react";
 
-/** @type {import('eslint').Linter.Config[]} */
-export default [
+// TODO: clean up for better composability
+export default tseslint.config(
   {
-    files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
+    ignores: ["dist", ".vinxi", ".wrangler", ".vercel", ".netlify", ".output", "build/"],
   },
-  { languageOptions: { globals: globals.browser } },
-  pluginJs.configs.recommended,
-  ...tseslint.configs.recommended,
-  pluginReact.configs.flat.recommended,
   {
-    settings: {
-      react: {
-        version: "detect",
+    files: ["**/*.{ts,tsx}"],
+    extends: [
+      js.configs.recommended,
+      ...tseslint.configs.recommended,
+      eslintConfigPrettier,
+      ...pluginQuery.configs["flat/recommended"],
+      ...pluginRouter.configs["flat/recommended"],
+    ],
+  },
+  {
+    files: ["**/*.{ts,tsx}"],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
       },
     },
+    plugins: {
+      "react-hooks": reactHooks,
+    },
     rules: {
-      "react/react-in-jsx-scope": "off",
-      "react/jsx-filename-extension": [1, { extensions: [".jsx", ".tsx"] }],
+      ...reactHooks.configs.recommended.rules,
     },
   },
-];
+  reactCompiler.configs.recommended,
+  {
+    files: ["**/*.{ts,tsx}"],
+    languageOptions: {
+      parserOptions: {
+        parser: tseslint.parser,
+        project: "./tsconfig.json",
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+    ...react.configs["recommended-type-checked"],
+  },
+  {
+    rules: {
+      // You can override any rules here
+      // "@eslint-react/prefer-read-only-props": "off",
+      // "@eslint-react/no-forward-ref": "off",
+      // "@eslint-react/no-context-provider": "off",
+      // "react-compiler/react-compiler": "warn",
+    },
+  },
+);

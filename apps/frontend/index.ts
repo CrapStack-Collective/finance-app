@@ -1,1 +1,1 @@
-console.log("the fronend is working");
+console.log("Hello via Bun!");
